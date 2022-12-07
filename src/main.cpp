@@ -73,6 +73,22 @@ int main (int argc, char **argv)
 
     in2.close();
 
+    // 构造相对定向模型
+    vector<OrientationSolver> orientationModel = {
+            OrientationSolver(&(vecFrame[0]), &(vecFrame[1]), 100.5, 2.8e-3), // 由205021与205022构成的相对定向模型
+            OrientationSolver(&(vecFrame[1]), &(vecFrame[2]), 100.5, 2.8e-3), // 由205022与205023构成的相对定向模型
+            OrientationSolver(&(vecFrame[2]), &(vecFrame[0]), 100.5, 2.8e-3)  // 由205023与205021构成的相对定向模型
+    };
+
+    // 相对定向计算
+    orientationModel[0].relativeOrientation(100, 0);
+    orientationModel[1].relativeOrientation(100, 0);
+    orientationModel[2].relativeOrientation(100, 0);
+
+    // 输出三个相对定向模型探测的粗差点对
+    orientationModel[0].printErrorList(false, true);
+    orientationModel[1].printErrorList(false, true);
+    orientationModel[2].printErrorList(false, true);
 
 
     return 0;
