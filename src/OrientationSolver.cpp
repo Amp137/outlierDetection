@@ -124,18 +124,14 @@ void OrientationSolver::relativeOrientation(const int _maxIter, const int _showD
         // 显示迭代细节
         if ((_showDetailEachIter > 0) && (iter % _showDetailEachIter == 0)) {
             cout << setprecision(8) << "Iteration " << iter + 1 << " cost: " << cost << endl;
-            cout << "Current bv, bw, dPhi, dOmega, dKappa:" << endl;
-            cout << setprecision(8) <<
-                 bu * vByu << " " <<
-                 bu * wByu << " " <<
-                 dPhi << " " <<
-                 dOmega << " " <<
-                 dKappa << endl;
+            printVariables();
         }
 
         // 更新量小于某一阈值，结束迭代
         if (x.norm() < 1e-12) {
             cout << "Converged (delta x < 1e-12)! Exit." << endl;
+            printVariables();
+
             for (int i = 0; i < numPt; i++)
                 errorList.emplace(co_occurList[i], V(i));
             break;
@@ -144,6 +140,8 @@ void OrientationSolver::relativeOrientation(const int _maxIter, const int _showD
 
         if (iter + 1 == maxIterRelative) {
             cout << "Max iteration reached! Exit." << endl;
+            printVariables();
+
             for (int i = 0; i < numPt; i++)
                 errorList.emplace(co_occurList[i], V(i));
         }
@@ -161,6 +159,7 @@ void OrientationSolver::printErrorList(bool _sortByValue, bool _onlyOutliers)
             sortedList.emplace_back(it);
     }
 
+    cout << "Frame " << frame1->frameNo << " and " << frame2->frameNo << ":" << endl;
     if (_onlyOutliers) {
         cout << "Outliers after relative orientation:" << endl;
         cout << "\t\tID\t\tError" << endl;
@@ -174,6 +173,7 @@ void OrientationSolver::printErrorList(bool _sortByValue, bool _onlyOutliers)
         for (auto it: sortedList)
             cout << setw(10) << setprecision(6) << it.first << " " << it.second << endl;
     }
+    cout << endl;
 }
 
 bool OrientationSolver::isOutlier(int _id)
@@ -182,6 +182,18 @@ bool OrientationSolver::isOutlier(int _id)
         return true;
     else
         return false;
+}
+
+void OrientationSolver::printVariables() const
+{
+    cout << "Current bv, bw, dPhi, dOmega, dKappa:" << endl;
+    cout << setprecision(8) <<
+         bu * vByu << " " <<
+         bu * wByu << " " <<
+         dPhi << " " <<
+         dOmega << " " <<
+         dKappa << endl;
+    cout << endl;
 }
 
 int OrientationSolver::cmpAbs(const pair<int, double>& x, const pair<int, double>& y)

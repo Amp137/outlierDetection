@@ -38,6 +38,7 @@ private:
 public:
     OrientationSolver(Frame* _f1, Frame* _f2, double _f, double _sigma0);
     void relativeOrientation(int _maxIter, int _showDetailEachIter); // 连续像对相对定向
+    void printVariables() const; // 打印平差变量
     void printErrorList(bool _sortByValue, bool _onlyOutliers); // 打印各像点相对定向后的残差，用于判断粗差
     bool isOutlier(int _id); // 如果点_id是粗差点，返回true
     //void modelPoints();
