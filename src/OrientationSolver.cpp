@@ -23,7 +23,7 @@ OrientationSolver::OrientationSolver(Frame *_f1, Frame *_f2, const double _f, co
     }
     meanPt /= numPt;
     bu = meanPt[0];
-    // cout << "Initial bu: " << bu << endl;
+    cout << "Initial bu: " << bu << endl;
 }
 
 // 连续像对相对定向
